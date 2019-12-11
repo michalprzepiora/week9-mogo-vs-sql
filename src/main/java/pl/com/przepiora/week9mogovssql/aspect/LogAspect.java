@@ -17,12 +17,12 @@ public class LogAspect {
   private static final Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
   @Around("execution(public * pl.com.przepiora.week9mogovssql.service.PersonService.*(..))")
-  public void logAdvice(ProceedingJoinPoint jp) throws Throwable {
+  public Object logAdvice(ProceedingJoinPoint jp) throws Throwable {
     Instant startTime = Instant.now();
-    jp.proceed();
+    Object ret = jp.proceed();
     Instant endTime = Instant.now();
-    LOG.info("-----> Method: {}, time:{} miliseconds", jp.getSignature().getName(),
+    LOG.info("-----> Method: {}, time:{} milliseconds", jp.getSignature().getName(),
         Duration.between(startTime, endTime).getNano() / 1000000);
-
+    return ret;
   }
 }

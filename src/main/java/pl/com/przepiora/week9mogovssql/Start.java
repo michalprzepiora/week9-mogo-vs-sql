@@ -17,9 +17,6 @@ public class Start {
   private final CsvService csvService;
   private final PersonService personService;
 
-  List<PersonSql> personSqlList;
-  List<PersonMongo> personMongoList;
-
   @Autowired
   public Start(CsvService csvService,
       PersonService personService) {
@@ -29,13 +26,19 @@ public class Start {
 
   @EventListener(ApplicationReadyEvent.class)
   public void init() {
-//    personSqlList = csvService.getPersonSqlList();
-//    personMongoList = csvService.getPersonMongoList();
+    List<PersonSql> personSqlList = csvService.getPersonSqlList();
+    List<PersonMongo> personMongoList = csvService.getPersonMongoList();
 
-//    personService.saveToH2(personSqlList);
-//    personService.readFromH2();
-//    personService.saveToMongo(personMongoList);
-//    personService.readFromMongo();
+    System.out.println("Wait 5 sec.");
+    try {
+      Thread.sleep(5000);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    personService.saveToH2(personSqlList);
+    personService.readFromH2();
+    personService.saveToMongo(personMongoList);
+    personService.readFromMongo();
 
   }
 
